@@ -1,0 +1,106 @@
+http:
+  - port: 8080
+    api:
+      - uri: /hello?wsdl
+        method: GET
+        responseHead:
+          Content-Type: text/xml; charset=utf-8
+        responseBody: |
+          <definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://example.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://example.org/" name="HelloWorldImplService">
+          <script/>
+          <types>
+          <xsd:schema>
+          <xsd:import namespace="http://example.org/" schemaLocation="http://localhost:8080/helloworld?xsd=1"/>
+          </xsd:schema>
+          </types>
+          <message name="sayHello">
+          <part name="parameters" element="tns:sayHello"/>
+          </message>
+          <message name="sayHelloResponse">
+          <part name="parameters" element="tns:sayHelloResponse"/>
+          </message>
+          <portType name="HelloWorld">
+          <operation name="sayHello">
+          <input wsam:Action="http://example.org/HelloWorld/sayHelloRequest" message="tns:sayHello"/>
+          <output wsam:Action="http://example.org/HelloWorld/sayHelloResponse" message="tns:sayHelloResponse"/>
+          </operation>
+          </portType>
+          <binding name="HelloWorldImplPortBinding" type="tns:HelloWorld">
+          <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+          <operation name="sayHello">
+          <soap:operation soapAction=""/>
+          <input>
+          <soap:body use="literal"/>
+          </input>
+          <output>
+          <soap:body use="literal"/>
+          </output>
+          </operation>
+          </binding>
+          <service name="HelloWorldImplService">
+          <port name="HelloWorldImplPort" binding="tns:HelloWorldImplPortBinding">
+          <soap:address location="http://localhost:8080/helloworld"/>
+          </port>
+          </service>
+          </definitions>
+      - uri: /helloworld
+        method: POST
+        responseHead:
+          Content-Type: text/xml; charset=utf-8
+        responseBody: <?xml version="1.0" ?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><ns2:sayHelloResponse xmlns:ns2="http://example.org/"><return>Hello, John Doe!</return></ns2:sayHelloResponse></S:Body></S:Envelope>
+      - uri: /test
+        method: GET
+        responseHead:
+          Content-Type: application/json
+        responseBody: '{
+                          "http": [
+                              {
+                                  "port": 8080,
+                                  "api": [
+                                      {
+                                          "uri": "/hello",
+                                          "method": "GET",
+                                          "responseHead": {
+                                              "Content-Type": "text/html; charset=utf-8"
+                                          },
+                                          "responseBody": "不同的文件格式适用于不同的情况，因此无法简单地回答哪种文件格式更简洁或可读性更好。一般来说，对于结构相对简单的数据，如配置文件、日志文件等，建议使用易于阅读和编写的格式。以下是一些常见的文件格式及其特点：\n- JSON：简洁、易于解析和生成，对于支持JSON格式的语言和工具而言，可以方便地进行处理和解析。\n- YAML：相对于JSON更易于阅读和编写，支持注释和多行文本，但可能会有一些实现上的差异。\n- XML：适用于基于文档的数据结构，支持命名空间和DTD/Schema验证，但也比较繁琐且嵌套层次深时可读性较差。\n- INI：简单明了，易于阅读和编写，但不支持嵌套结构和复杂数据类型。\n- TOML: 旨在成为一个容易阅读和编写的格式，支持注释和嵌套结构，但目前使用不如其他格式广泛。\n总之，在选择文件格式时，应该根据具体需求和场景综合考虑各个因素，例如文本长度、结构复杂度、易读性、兼容性等。\n"
+                                      },
+                                      {
+                                          "uri": "/hello",
+                                          "method": "POST",
+                                          "responseHead": {
+                                              "Content-Type": "text/html; charset=utf-8"
+                                          },
+                                          "responseBody": "hello world POST!!!"
+                                      },
+                                      {
+                                          "uri": "/test",
+                                          "method": "GET",
+                                          "responseHead": {
+                                              "Content-Type": "application/json"
+                                          },
+                                          "responseBody": "{\"name\": \"test\" }"
+                                      }
+                                  ]
+                              }
+                          ]
+                      }'
+  - port: 8081
+    api:
+      - uri: /hello
+        method: GET
+        responseHead:
+          Content-Type: text/html; charset=utf-8
+        responseBody: hello world GET!!!
+      - uri: /hello
+        method: POST
+        responseHead:
+          Content-Type: text/html; charset=utf-8
+        responseBody: hello world POST!!!
+      - uri: /test
+        method: GET
+        responseHead:
+          Content-Type: application/json
+        responseBody: '{"name": "test" }'
+socket:
+  - port: 8082
