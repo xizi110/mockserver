@@ -1,0 +1,16 @@
+description: "测试,失败，返回500"
+url: "/test"
+method: "GET"
+request:
+  headers:
+  #    - "header1=value1"
+  #    - "header2=value2"
+  parameters:
+    - "name!=lucy"
+#    - "param2=value2"
+response:
+  headers:
+    - name: "content-type"
+      value: "application/json"
+  content: "{\"status\":\"failed\",\"code\":500}"
+
